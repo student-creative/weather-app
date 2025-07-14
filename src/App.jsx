@@ -89,24 +89,30 @@ const App = () => {
             </h1>
           </div>
 
-          {/* Search */}
-          <div className="flex items-center gap-3 bg-white/20 px-4 py-2 rounded-xl border border-white/30">
-            <FaLocationArrow className="text-white text-lg" />
-            <input
-              type="text"
-              placeholder="Enter city name"
-              className="flex-1 bg-transparent text-white placeholder-white focus:outline-none"
-              value={city}
-              onChange={(e) => setCity(e.target.value)}
-            />
+          {/* ✅ Fully Responsive Search Input + Button */}
+          <div className="flex flex-col sm:flex-row items-stretch gap-3 bg-white/20 px-4 py-3 rounded-xl border border-white/30">
+            {/* Input with icon */}
+            <div className="flex items-center gap-2 flex-1 bg-white/10 px-3 py-2 rounded-md">
+              <FaLocationArrow className="text-white text-lg" />
+              <input
+                type="text"
+                placeholder="Enter city name"
+                className="flex-1 bg-transparent text-white placeholder-white focus:outline-none"
+                value={city}
+                onChange={(e) => setCity(e.target.value)}
+              />
+            </div>
+
+            {/* Search button */}
             <button
               onClick={() => getWeather()}
-              className="bg-gradient-to-r from-[#00c6ff] to-[#0072ff] text-white px-4 py-1.5 rounded-lg font-semibold hover:opacity-90 transition"
+              className="bg-gradient-to-r from-[#00c6ff] to-[#0072ff] text-white px-4 py-2 rounded-md font-semibold hover:opacity-90 transition w-full sm:w-auto"
             >
               Search
             </button>
           </div>
 
+          {/* Error */}
           {error && <p className="text-red-300 font-semibold mt-2">{error}</p>}
         </div>
 
