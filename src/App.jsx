@@ -103,13 +103,13 @@ const App = () => {
               />
             </div>
 
-            {/* Search button */}
-            <button
-              onClick={() => getWeather()}
-              className="bg-gradient-to-r from-[#00c6ff] to-[#0072ff] text-white px-4 py-2 rounded-md font-semibold hover:opacity-90 transition w-full sm:w-auto"
-            >
-              Search
-            </button>
+
+          <button
+  onClick={() => getWeather()}
+  className="bg-gradient-to-r from-[#f87171] to-[#ef4444] text-white px-4 py-2 rounded-md font-semibold hover:opacity-90 transition w-full sm:w-auto"
+>
+  Search
+</button>
           </div>
 
           {/* Error */}
