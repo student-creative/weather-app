@@ -25,7 +25,7 @@ const App = () => {
   const getWeather = async (customCity = city) => {
     if (!customCity) return;
     try {
-      const response = await axios.get('http://api.weatherstack.com/current', {
+      const response = await axios.get('https://api.weatherstack.com/current', {
         params: {
           access_key: '19fa3c71813309e769e235114eff339c',
           query: customCity
@@ -48,7 +48,7 @@ const App = () => {
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const response = await axios.get('http://api.weatherstack.com/current', {
+        const response = await axios.get('https://api.weatherstack.com/current', {
           params: {
             access_key: '19fa3c71813309e769e235114eff339c',
             query: 'Rajkot',
@@ -72,14 +72,12 @@ const App = () => {
     >
       <div className="absolute inset-0 bg-black bg-opacity-70 z-0"></div>
 
-      {/* ✅ Mobile-only heading */}
-     {/* ✅ Mobile-only Gradient Heading */}
-<div className="absolute top-6 text-center sm:hidden z-20 w-full px-4">
-  <h2 className="text-2xl font-extrabold bg-gradient-to-r from-pink-400 via-yellow-300 to-blue-500 bg-clip-text text-transparent drop-shadow-md animate-pulse">
-    ☁️ Live Weather Updates 🌈
-  </h2>
-</div>
-
+      {/* ✅ Mobile-only Gradient Heading */}
+      <div className="absolute top-6 text-center sm:hidden z-20 w-full px-4">
+        <h2 className="text-2xl font-extrabold bg-gradient-to-r from-pink-400 via-yellow-300 to-blue-500 bg-clip-text text-transparent drop-shadow-md animate-pulse">
+          ☁️ Live Weather Updates 🌈
+        </h2>
+      </div>
 
       <div className="relative z-10 w-full max-w-[500px] bg-white/10 rounded-[30px] border border-white/30 backdrop-blur-xl shadow-xl p-6 sm:p-8 flex flex-col gap-6">
         {/* Header */}
