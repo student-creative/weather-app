@@ -6,11 +6,14 @@ import {
   WiDaySunny, WiRain, WiCloud, WiThunderstorm, WiSnow, WiFog
 } from 'react-icons/wi';
 
+const API_KEY = 'c811368aade0489eb5865933252807'; // Replace with your WeatherAPI.com key
+
 const App = () => {
   const [city, setCity] = useState('Rajkot');
   const [weather, setWeather] = useState(null);
   const [error, setError] = useState('');
 
+  // Icon based on weather description
   const getWeatherIcon = (desc = '') => {
     const lower = desc.toLowerCase();
     if (lower.includes("sun")) return <WiDaySunny size={90} className="text-yellow-300" />;
@@ -22,48 +25,29 @@ const App = () => {
     return <WiDaySunny size={90} className="text-yellow-300" />;
   };
 
-  const getWeather = async (customCity = city) => {
+  // API call function
+  const getWeather = async (customCity) => {
     if (!customCity) return;
+
     try {
-      const response = await axios.get('https://api.weatherstack.com/current', {
+      const res = await axios.get('https://api.weatherapi.com/v1/current.json', {
         params: {
-          access_key: '19fa3c71813309e769e235114eff339c',
-          query: customCity
+          key: API_KEY,
+          q: customCity,
         }
       });
-
-      if (response.data.success === false || !response.data.current) {
-        setError("❌ City not found.");
-        setWeather(null);
-      } else {
-        setWeather(response.data);
-        setError('');
-      }
+      setWeather(res.data);
+      setError('');
     } catch (err) {
-      setError("❌ Something went wrong.");
+      setError("❌ City not found or API error.");
       setWeather(null);
     }
   };
 
+  // Initial fetch on page load for Rajkot
   useEffect(() => {
-    const fetchWeather = async () => {
-      try {
-        const response = await axios.get('https://api.weatherstack.com/current', {
-          params: {
-            access_key: '19fa3c71813309e769e235114eff339c',
-            query: 'Rajkot',
-          }
-        });
-        setWeather(response.data);
-        setError('');
-      } catch (err) {
-        setError("❌ Something went wrong.");
-        setWeather(null);
-      }
-    };
-
-    fetchWeather();
-  }, []);
+    getWeather('Rajkot');
+  }, []); // 👈 Only on mount, no warning
 
   return (
     <div
@@ -72,7 +56,6 @@ const App = () => {
     >
       <div className="absolute inset-0 bg-black bg-opacity-70 z-0"></div>
 
-      {/* ✅ Mobile-only Gradient Heading */}
       <div className="absolute top-6 text-center sm:hidden z-20 w-full px-4">
         <h2 className="text-2xl font-extrabold bg-gradient-to-r from-pink-400 via-yellow-300 to-blue-500 bg-clip-text text-transparent drop-shadow-md animate-pulse">
           ☁️ Live Weather Updates 🌈
@@ -89,9 +72,8 @@ const App = () => {
             </h1>
           </div>
 
-          {/* ✅ Fully Responsive Search Input + Button */}
+          {/* Input + Button */}
           <div className="flex flex-col sm:flex-row items-stretch gap-3 bg-white/20 px-4 py-3 rounded-xl border border-white/30">
-            {/* Input with icon */}
             <div className="flex items-center gap-2 flex-1 bg-white/10 px-3 py-2 rounded-md">
               <FaLocationArrow className="text-white text-lg" />
               <input
@@ -103,28 +85,26 @@ const App = () => {
               />
             </div>
 
-
-          <button
-  onClick={() => getWeather()}
-  className="bg-gradient-to-r from-[#f87171] to-[#ef4444] text-white px-4 py-2 rounded-md font-semibold hover:opacity-90 transition w-full sm:w-auto"
->
-  Search
-</button>
+            <button
+              onClick={() => getWeather(city)}
+              className="bg-gradient-to-r from-[#f87171] to-[#ef4444] text-white px-4 py-2 rounded-md font-semibold hover:opacity-90 transition w-full sm:w-auto"
+            >
+              Search
+            </button>
           </div>
 
-          {/* Error */}
           {error && <p className="text-red-300 font-semibold mt-2">{error}</p>}
         </div>
 
         {/* Weather Info */}
         {weather && weather.current && (
           <div className="text-center mt-2 bg-white/10 border border-white/20 rounded-2xl py-6 px-4 flex flex-col items-center gap-3 shadow-inner backdrop-blur-sm text-white">
-            {getWeatherIcon(weather.current.weather_descriptions?.[0])}
+            {getWeatherIcon(weather.current.condition?.text)}
             <h2 className="text-2xl sm:text-3xl font-semibold">
               📍 {weather.location.name}, {weather.location.country}
             </h2>
-            <p className="text-xl sm:text-2xl">🌡️ {weather.current.temperature}°C</p>
-            <p className="text-lg">🌤️ {weather.current.weather_descriptions?.[0]}</p>
+            <p className="text-xl sm:text-2xl">🌡️ {weather.current.temp_c}°C</p>
+            <p className="text-lg">🌤️ {weather.current.condition?.text}</p>
             <p className="text-sm text-white/70">🕒 {weather.location.localtime}</p>
           </div>
         )}
